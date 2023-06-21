@@ -36,7 +36,7 @@ export function SignupPage () {
 
                     <div className={inputsContainerClasses}>
                         <label className="text-white">Create a username</label>
-                        <input type="text" placeholder="Type your password once again" className={inputsClasses}/>
+                        <input type="text" placeholder="Type your clever username" className={inputsClasses}/>
                     </div>
 
                     <div className={buttonContainerClasses}>
