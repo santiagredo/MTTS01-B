@@ -14,7 +14,7 @@ export function SignupPage () {
     const buttonClasses = "bg-green-500 text-white mx-auto rounded-3xl w-full h-10 font-bold max-w-s transform hover:scale-105";
 
     const spanClasses = "my-6 text-center text-white font-semibold";
-    const LinkClasses = "mx-1 text-green-500 mx-auto my-1 hover:underline";
+    const LinkClasses = "mx-1.5 text-green-500 mx-auto my-1 hover:underline";
 
     return (
         <section className={sectionClasses}>
