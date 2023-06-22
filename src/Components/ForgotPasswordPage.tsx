@@ -39,7 +39,8 @@ export function ForgotPasswordPage () {
     const inputsClasses = "w-full rounded px-2 h-10 max-w-s bg-gray-900 hover:border hover:border-solid hover:border-white text-white focus:border-2";
 
     const buttonContainerClasses ="flex justify-center flex-col w-11/12 mx-auto my-6";
-    const buttonClasses = "bg-green-500 text-white mx-auto rounded-3xl w-full h-10 font-bold max-w-s transform hover:scale-105";
+    const isButtonDisabled = user.length < 1;
+    const buttonClasses = `bg-green-500 text-white mx-auto rounded-3xl w-full h-10 font-bold max-w-s transform hover:scale-105 ${isButtonDisabled && "opacity-60"}`;
 
     const LinkClasses = "mx-1 text-green-500 mx-auto my-1 hover:underline";
 
@@ -61,7 +62,7 @@ export function ForgotPasswordPage () {
                     </div>
 
                     <div className={buttonContainerClasses}>
-                        <button type="submit" className={buttonClasses}>Send</button>
+                        <button type="submit" className={buttonClasses} disabled={isButtonDisabled}>Send</button>
                     </div>
                 </div>
             </form>

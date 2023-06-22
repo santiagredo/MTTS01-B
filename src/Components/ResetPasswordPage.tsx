@@ -60,6 +60,8 @@ export function ResetPasswordPage () {
     const inputsClasses = "w-full rounded px-2 h-10 max-w-s bg-gray-900 hover:border hover:border-solid hover:border-white text-white focus:border-2";
 
     const buttonContainerClasses ="flex justify-center flex-col w-11/12 mx-auto my-6";
+    const isResetCodeButtonDisabled = resetCode === undefined;
+    const isPasswordChangeButtonDisabled = newPassword.length < 1;
     const buttonClasses = "bg-green-500 text-white mx-auto rounded-3xl w-full h-10 font-bold max-w-s transform hover:scale-105";
 
     const LinkClasses = "mx-1 text-green-500 mx-auto my-1 hover:underline";
@@ -83,7 +85,7 @@ export function ResetPasswordPage () {
                         </div>
 
                         <div className={buttonContainerClasses}>
-                            <button type="submit" className={buttonClasses}>Submit</button>
+                            <button type="submit" className={`${buttonClasses} ${isResetCodeButtonDisabled && "opacity-60"}`} disabled={isResetCodeButtonDisabled}>Submit</button>
                         </div>
                     </div>
                 </form>
@@ -102,7 +104,7 @@ export function ResetPasswordPage () {
                         </div>
 
                         <div className={buttonContainerClasses}>
-                            <button type="submit" className={buttonClasses}>Submit</button>
+                            <button type="submit" className={`${buttonClasses} ${isPasswordChangeButtonDisabled && "opacity-60"}`} disabled={isPasswordChangeButtonDisabled}>Submit</button>
                         </div>
                     </div>
                 </form>

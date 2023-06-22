@@ -49,7 +49,8 @@ export function LoginPage () {
     const inputsClasses = "w-full rounded px-2 h-10 max-w-s bg-gray-900 hover:border hover:border-solid hover:border-white text-white focus:border-2";
 
     const buttonContainerClasses ="flex justify-center flex-col w-11/12 mx-auto my-6";
-    const buttonClasses = "bg-green-500 text-white mx-auto rounded-3xl w-full h-10 font-bold max-w-s transform hover:scale-105";
+    const isButtonDisabled = formUser.length < 1 || formPassword.length < 1;
+    const buttonClasses = `bg-green-500 text-white mx-auto rounded-3xl w-full h-10 font-bold max-w-s transform hover:scale-105 ${isButtonDisabled && "opacity-60"}`;
 
     const LinkClasses = "text-white mx-auto my-1 hover:text-green-500";
 
@@ -76,7 +77,7 @@ export function LoginPage () {
                     </div>
 
                     <div className={buttonContainerClasses}>
-                        <button type="submit" className={buttonClasses}>Log in</button>
+                        <button type="submit" className={buttonClasses} disabled={isButtonDisabled}>Log in</button>
                     </div>
                 </div>
             </form>
