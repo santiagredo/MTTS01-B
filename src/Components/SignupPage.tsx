@@ -1,8 +1,44 @@
-import { Link } from "react-router-dom";
-
-
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { pageContext } from "../PageContext";
+import { usersDatabase, UserModel } from "../database";
 
 export function SignupPage () {
+    const context = React.useContext(pageContext);
+    const navigate = useNavigate();
+
+    const [formEmail, setFormEmail] = React.useState("");
+    const handleFormEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormEmail(event.target.value);
+    };
+
+    const [formPassword, setFormPassword] = React.useState("");
+    const handleFormPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormPassword(event.target.value);
+    };
+
+    const [formUser, setFormUser] = React.useState("");
+    const handleFormUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormUser(event.target.value);
+    };
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        
+        const newUser: UserModel = {
+            email: formEmail,
+            password: formPassword,
+            username: formUser
+        };
+    
+        usersDatabase.push(newUser);
+        context.setUser(newUser);
+    };
+
+    React.useEffect(() => {
+        if (context.user.email || context.user.username) {navigate("/home")};
+    }, [context.user]);
+
     const sectionClasses = "w-full flex justify-center flex-col h-screen bg-black";
     const h2Classes = "my-6 text-center text-3xl text-white font-bold";
 
@@ -22,21 +58,21 @@ export function SignupPage () {
                 Create a new account
             </h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className={sectionContainerClasses}>
                     <div className={inputsContainerClasses}>
                         <label className="text-white">What is your email address?</label>
-                        <input type="email" placeholder="Type your email address" className={inputsClasses}/>
+                        <input type="email" placeholder="Type your email address" className={inputsClasses} onChange={handleFormEmailChange}/>
                     </div>
 
                     <div className={inputsContainerClasses}>
                         <label className="text-white">Create a password</label>
-                        <input type="password" placeholder="Type your password" className={inputsClasses}/>
+                        <input type="password" placeholder="Type your password" className={inputsClasses} onChange={handleFormPasswordChange}/>
                     </div>
 
                     <div className={inputsContainerClasses}>
                         <label className="text-white">Create a username</label>
-                        <input type="text" placeholder="Type your clever username" className={inputsClasses}/>
+                        <input type="text" placeholder="Type your clever username" className={inputsClasses} onChange={handleFormUserChange}/>
                     </div>
 
                     <div className={buttonContainerClasses}>
