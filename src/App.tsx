@@ -23,6 +23,8 @@ function App() {
             <Route path='/forgotPassword' element={<ForgotPasswordPage/>}/>
             <Route path='/resetPassword' element={<ResetPasswordPage/>}/>
             <Route path='/home' element={<HomePage/>}/>
+
+            <Route path='/*' element={<LoginPage/>}/>
           </Routes> 
 
         </BrowserRouter>
