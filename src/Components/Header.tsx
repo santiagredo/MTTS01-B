@@ -28,7 +28,7 @@ export function Header () {
     const navClasses = "text-center";
     const pClasses = "";
     const divClasses = "flex justify-between";
-    const buttonClasses = "my-2 w-20 border-2 border-green-500 text-white rounded-md transform hover:scale-105";
+    const buttonClasses = "my-2 w-20 text-green-500 rounded-md transform hover:scale-105";
 
     return (
         <header className={headerClasses}>
