@@ -1,8 +1,45 @@
-import { Link } from "react-router-dom";
-
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { pageContext } from "../PageContext";
+import { usersDatabase } from "../database";
 
 
 export function LoginPage () {
+    const context = React.useContext(pageContext);
+    const navigate = useNavigate();
+
+    const [formUser, setFormUser] = React.useState("");
+    const handleFormUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormUser(event.target.value);
+    };
+
+    const [formPassword, setFormPassword] = React.useState("");
+    const handleFormPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormPassword(event.target.value);
+    };
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const userExists = usersDatabase.find(ele => ele.email === formUser || ele.username === formUser);
+
+        if (userExists) {
+            if (userExists.password === formPassword) {
+                context.setUser(userExists);
+                navigate("/home");
+            } else {
+                alert("User exists, password is NOT correct");
+            };
+        } else {
+            alert("User doesn't exist");
+        };
+    };
+
+    React.useEffect(() => {
+        if (context.user.email || context.user.username) {navigate("/home")};
+
+    }, [])
+
     const mainClasses = "w-full flex justify-center flex-col h-screen bg-black";
     const h1Classes = "my-6 text-center text-5xl text-white font-bold";
     const pClasses = "my-6 text-center text-white font-semibold";
@@ -26,16 +63,16 @@ export function LoginPage () {
                 Log in to continue using the app
             </p>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className={mainContainerClasses}>
                     <div className={inputsContainerClasses}>
                         <label className="text-white">Email address or username</label>
-                        <input type="text" placeholder="Email address" className={inputsClasses}/>
+                        <input type="text" placeholder="Email address or username" className={inputsClasses} onChange={handleFormUserChange}/>
                     </div>
 
                     <div className={inputsContainerClasses}>
                         <label className="text-white">Password</label>
-                        <input type="password" placeholder="Password" className={inputsClasses}/>
+                        <input type="password" placeholder="Password" className={inputsClasses} onChange={handleFormPasswordChange}/>
                     </div>
 
                     <div className={buttonContainerClasses}>
