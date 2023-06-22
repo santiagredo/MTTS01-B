@@ -5,25 +5,29 @@ import { LoginPage } from './Components/LoginPage';
 import { SignupPage } from './Components/SignupPage';
 import { ForgotPasswordPage } from './Components/ForgotPasswordPage';
 import { ResetPasswordPage } from './Components/ResetPasswordPage';
+import { HomePage } from './Components/HomePage';
+import { PageContextProvider } from './PageContext';
 
 function App() {
 
   return (
-    <React.Fragment>
+    <PageContextProvider>
+      <React.Fragment>
+        <BrowserRouter>
 
-      <BrowserRouter>
-        <Header/>
+          <Header/>
 
-        <Routes>
-          <Route path='/' element={<LoginPage/>}/>
-          <Route path='/signup' element={<SignupPage/>}/>
-          <Route path='/forgotPassword' element={<ForgotPasswordPage/>}/>
-          <Route path='/resetPassword' element={<ResetPasswordPage/>}/>
-          
-        </Routes> 
+          <Routes>
+            <Route path='/' element={<LoginPage/>}/>
+            <Route path='/signup' element={<SignupPage/>}/>
+            <Route path='/forgotPassword' element={<ForgotPasswordPage/>}/>
+            <Route path='/resetPassword' element={<ResetPasswordPage/>}/>
+            <Route path='/home' element={<HomePage/>}/>
+          </Routes> 
 
-      </BrowserRouter>
-    </React.Fragment>
+        </BrowserRouter>
+      </React.Fragment>
+    </PageContextProvider>
   )
 }
 
