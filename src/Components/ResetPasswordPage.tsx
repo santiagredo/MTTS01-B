@@ -1,12 +1,54 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { usersDatabase, resetCodes, ResetCodeModel } from "../database";
 
 
 
 export function ResetPasswordPage () {
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        navigate("/resetPassword");
+    const [resetCodeExists, setResetCodeExists] = React.useState<boolean>(false);
+
+    const [resetCode, setResetCode] = React.useState<number>();
+    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setResetCode(Number(event.target.value));
+    };
+
+    const [newPassword, setNewPassword] = React.useState<string>("");
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPassword(event.target.value);
+    };
+
+    const handleResetCodeSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        
+        const storedResetCode: ResetCodeModel | undefined = resetCodes.find(ele => ele[0] === resetCode);
+
+        if (storedResetCode) {
+            setResetCodeExists(true);
+        } else {
+            alert("Code doesn't exist");
+        };
+    };
+
+    const handlePasswordChangeSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const storedResetCode: ResetCodeModel | undefined = resetCodes.find(ele => ele[0] === resetCode);
+
+        if (storedResetCode) {
+            const index = usersDatabase.findIndex(ele => ele.email === storedResetCode[1].email);
+
+            if (index !== -1) {
+                usersDatabase[index].password = newPassword;
+                alert("Password successfully changed");
+                navigate("/");
+            } else {
+                alert("Error processing your request");
+            };
+        } else {
+            alert("Error processing your request");
+        };
     };
 
     const sectionClasses = "w-full flex justify-center flex-col h-screen bg-black";
@@ -28,39 +70,43 @@ export function ResetPasswordPage () {
                 Reset password
             </h2>
 
-            <form onSubmit={handleSubmit}>
-                <p className={pClasses}>
-                    Enter the code provided to reset the password associated to your email
-                </p>
+            {!resetCodeExists && (
+                <form onSubmit={handleResetCodeSubmit}>
+                    <p className={pClasses}>
+                        Enter the code provided to reset the password associated to your email
+                    </p>
 
-                <div className={sectionContainerClasses}>
-                    <div className={inputsContainerClasses}>
-                        <label className="text-white">Enter your code</label>
-                        <input type="text" placeholder="Type your code" className={inputsClasses}/>
+                    <div className={sectionContainerClasses}>
+                        <div className={inputsContainerClasses}>
+                            <label className="text-white">Enter your code</label>
+                            <input type="number" placeholder="Type your code" className={inputsClasses} onChange={handleCodeChange}/>
+                        </div>
+
+                        <div className={buttonContainerClasses}>
+                            <button type="submit" className={buttonClasses}>Submit</button>
+                        </div>
                     </div>
+                </form>
+            )}
 
-                    <div className={buttonContainerClasses}>
-                        <button type="submit" className={buttonClasses}>Submit</button>
+            {resetCodeExists && (
+                <form onSubmit={handlePasswordChangeSubmit}>
+                    <p className={pClasses}>
+                        Type your new password, make sure to remember it in the future
+                    </p>
+
+                    <div className={sectionContainerClasses}>
+                        <div className={inputsContainerClasses}>
+                            <label className="text-white">Enter your new password</label>
+                            <input type="password" placeholder="Type your new password" className={inputsClasses} onChange={handlePasswordChange}/>
+                        </div>
+
+                        <div className={buttonContainerClasses}>
+                            <button type="submit" className={buttonClasses}>Submit</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-
-            <form onSubmit={handleSubmit}>
-                <p className={pClasses}>
-                    Type your new password, make sure to remember it in the future
-                </p>
-
-                <div className={sectionContainerClasses}>
-                    <div className={inputsContainerClasses}>
-                        <label className="text-white">Enter your new password</label>
-                        <input type="password" placeholder="Type your new password" className={inputsClasses}/>
-                    </div>
-
-                    <div className={buttonContainerClasses}>
-                        <button type="submit" className={buttonClasses}>Submit</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            )}
 
             <Link to="/" className={LinkClasses}>
                 Return to log in

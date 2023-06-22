@@ -17,3 +17,8 @@ export const usersDatabase: UserModel[] = [{
     username: "admin",
     password: "admin"
 }];
+
+
+export type ResetCodeModel = [number, UserModel];
+
+export const resetCodes: ResetCodeModel[] = [];

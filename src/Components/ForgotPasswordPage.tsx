@@ -1,14 +1,35 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { usersDatabase } from "../database";
+import { usersDatabase, resetCodes } from "../database";
 
 
 export function ForgotPasswordPage () {
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        navigate("/resetPassword");
+    const [user, setUser] = React.useState<string>("");
+    const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUser(event.target.value);
     };
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const userExists = usersDatabase.find(ele => ele.email === user);
+        
+        if (userExists) {
+            const randomCode = generateRandomNumber();
+            resetCodes.push([randomCode, userExists]);
+            alert(`Your reset code is: ${randomCode}`);
+            navigate("/resetPassword");
+        } else {
+            alert("User doesn't exist");
+        };
+    };
+
+    const generateRandomNumber = () => {
+        const randomNumber = Math.floor(Math.random() * 9000) + 99999;
+        return randomNumber;
+    };
     const sectionClasses = "w-full flex justify-center flex-col h-screen bg-black";
     const h2Classes = "w-11/12 my-6 mx-auto text-center text-3xl text-white font-bold";
     const pClasses = "w-11/12 my-6 mx-auto text-center text-white";
@@ -36,7 +57,7 @@ export function ForgotPasswordPage () {
                 <div className={sectionContainerClasses}>
                     <div className={inputsContainerClasses}>
                         <label className="text-white">Type your email address</label>
-                        <input type="email" placeholder="Type your email address" className={inputsClasses}/>
+                        <input type="email" placeholder="Type your email address" className={inputsClasses} onChange={handleUserChange}/>
                     </div>
 
                     <div className={buttonContainerClasses}>
